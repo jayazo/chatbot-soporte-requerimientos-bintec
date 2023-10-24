@@ -1,0 +1,12 @@
+chainlit
+langchain
+python-dotenv
+google-generativeai
+ipykernel
+chromadb
+pypdf
+sentence-transformers
+openai
+google-search-results
+pandas
+msal
