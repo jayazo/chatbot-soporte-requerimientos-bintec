@@ -1,0 +1,44 @@
+```bash
+2023-09-27 10:15:54 - 
+Traceback (most recent call last):
+  File "...\.venv\lib\site-packages\chainlit\utils.py", line 39, in wrapper
+    return await user_function(**params_values)
+  File "...\main.py", line 60, in main
+    res = await chain.acall(message, callbacks=[callbacks])
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 361, in acall
+    raise e
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 355, in acall
+    await self._acall(inputs, run_manager=run_manager)
+  File "...\.venv\lib\site-packages\langchain\chains\qa_with_sources\base.py", line 189, in _acall   
+    answer = await self.combine_documents_chain.arun(
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 568, in arun
+    await self.acall(
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 361, in acall
+    raise e
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 355, in acall
+    await self._acall(inputs, run_manager=run_manager)
+  File "...\.venv\lib\site-packages\langchain\chains\combine_documents\base.py", line 121, in _acall 
+    output, extra_return_dict = await self.acombine_docs(
+  File "...\.venv\lib\site-packages\langchain\chains\combine_documents\stuff.py", line 189, in acombine_docs
+    return await self.llm_chain.apredict(callbacks=callbacks, **inputs), {}
+  File "...\.venv\lib\site-packages\langchain\chains\llm.py", line 274, in apredict
+    return (await self.acall(kwargs, callbacks=callbacks))[self.output_key]
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 361, in acall
+    raise e
+  File "...\.venv\lib\site-packages\langchain\chains\base.py", line 355, in acall
+    await self._acall(inputs, run_manager=run_manager)
+  File "...\.venv\lib\site-packages\langchain\chains\llm.py", line 239, in _acall
+    response = await self.agenerate([inputs], run_manager=run_manager)
+  File "...\.venv\lib\site-packages\langchain\chains\llm.py", line 117, in agenerate
+    return await self.llm.agenerate_prompt(
+  File "...\.venv\lib\site-packages\langchain\llms\base.py", line 514, in agenerate_prompt
+    return await self.agenerate(
+  File "...\.venv\lib\site-packages\langchain\llms\base.py", line 820, in agenerate
+    output = await self._agenerate_helper(
+  File "...\.venv\lib\site-packages\langchain\llms\base.py", line 708, in _agenerate_helper
+    raise e
+  File "...\.venv\lib\site-packages\langchain\llms\base.py", line 695, in _agenerate_helper
+    await self._agenerate(
+  File "...\.venv\lib\site-packages\langchain\llms\base.py", line 476, in _agenerate
+    raise NotImplementedError()
+NotImplementedError```
