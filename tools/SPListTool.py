@@ -104,50 +104,20 @@ class ListDataExtract():
 
 
 class CustomPandasTool(BaseTool):
-   name = "custom_pandas_tool"
-   description = "..."  # -> To-Do
-   
+    name = "custom_pandas_tool"
+    description = "Usar cuando el usuario desee conocer el estado de un requerimiento"
+    pandas_llm = OpenAI(model_name="text-davinci-003", temperature=0,
+                    verbose=True, openai_api_key=ENV['OPENAI_API_KEY'])
+    
+    def _run(self, prompt: str) -> str:
+        """Use the tool."""
+        df = pd.read_csv("../data/data_test.csv")
 
-   def __init__(self, *args, **kwargs):
-       super().__init__(*args, **kwargs)
-       self.list_id = kwargs["list_id"]
-   
+        pandas_agent = create_pandas_dataframe_agent(
+            llm=self.llm,
+            df=df,
+            verbose=True,
+            agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
+        )
 
-   def _arun(
-       self,
-       prompt: str,
-       run_manager: Optional[CallbackManagerForToolRun] = None,
-   ) -> str:
-      """Use the tool."""
-
-      # To-Do: Definir el router de listas
-
-
-      # Pasar params e id de la lista segun sea el caso
-      list_data_ex = ListDataExtract(
-         authority=ENV[""]
-      )
-      
-      df = list_data_ex.get_dataframe()
-      
-      pandas_agent = create_pandas_dataframe_agent(
-         llm=OpenAI(
-            temperature=0,
-            openai_api_key=ENV['OPENAI_API_KEY'],
-            streaming=True,
-            model_name="text-davinci-003",
-            verbose=True),
-         df=df,
-         verbose=True,
-         agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
-      )
-      
-      return pandas_agent.run(prompt)
-
-   # async def _arun(
-   #     self,
-   #     prompt: str,
-   #     run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-   # ) -> str:
-   #    """Use the tool asynchronously."""
-   #    raise NotImplementedError("custom_search does not support async")
+        return pandas_agent.run(prompt)

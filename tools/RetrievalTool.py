@@ -16,7 +16,18 @@ def retrieval_qa_tool(llm, retriever) -> BaseTool:
    tool = Tool(
       name="Retrieval QA",
       func=rag.run,
-      description="",
+      description="""Usar cuando la pregunta esté relacionada a: 
+                     - Conformacion de equipo de apoyo
+                     - Conocimiento de proveedores
+                     - Solicitar acuerdos de confidencialidad
+                     - Solicitar propuesta económica o cotizaciones
+                     - Negociaciones
+                     - Definiciones contables y material
+                     - Formalizacion de contratos o compra
+                     - Gestionar prerrequisitos de negociacion
+                     - Conocimiento de proveedores
+                     - Gestionar renovacion
+                     - Actualizar informacion del proveedor""",
       return_direct=True 
    )
 
