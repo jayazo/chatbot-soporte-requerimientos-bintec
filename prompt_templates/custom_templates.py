@@ -5,26 +5,45 @@ from typing import List, Union
 from langchain.schema import AgentAction, AgentFinish, OutputParserException
 import re
 
-MAIN_AGENT_PROMPT_TEMPLATE = """Contesta las siguientes preguntas de la mejor manera posible, siendo lo mas amigable y amable posible. Tienes acceso a las siguientes herramientas:
+# MAIN_AGENT_PROMPT_TEMPLATE = """Contesta las siguientes preguntas de la mejor manera posible, siendo lo mas amigable y amable posible. Tienes acceso a las siguientes herramientas:
+
+# {tools}
+
+# Utiliza el siguiente formato:
+
+# Question: La pregunta de entrada que debes responder.
+# Thought: siempre debes pensar en qué hacer.
+# Action: la acción a tomar, debe ser una de [{tool_names}]
+# Action Input: La entrada para la acción (Debe ser la pregunta misma realizada, es decir: '{input}').
+# Observation: El resultado de la acción
+# ... (este Pensamiento/Acción/Entrada de la Acción/Observación puede repetirse máximo 1 vez)
+# Thought: Ahora sé la respuesta final
+# Final Answer: la respuesta final a la pregunta original
+
+# ¡Comienza! Recuerda ser amable, y siempre incluye en la respuesta si puedes ayudar con algo más, aunque no tengas la respuesta.
+
+# Question: {input}
+# {agent_scratchpad}"""
+# Set up the base template
+MAIN_AGENT_PROMPT_TEMPLATE = """Answer the following questions as best you can. You have access to the following tools:
 
 {tools}
 
-Utiliza el siguiente formato:
+Use the following format:
 
-Question: La pregunta de entrada que debes responder.
-Thought: siempre debes pensar en qué hacer.
-Action: la acción a tomar, debe ser una de [{tool_names}]
-Action Input: La entrada para la acción (Debe ser la pregunta misma realizada, pero en string, es decir, el prompt del usuario).
-Observation: El resultado de la acción
-... (este Pensamiento/Acción/Entrada de la Acción/Observación puede repetirse máximo 2 veces)
-Thought: Ahora sé la respuesta final
-Final Answer: la respuesta final a la pregunta original
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
 
-¡Comienza! Recuerda ser amable, y siempre incluye en la respuesta si puedes ayudar con algo más, aunque no tengas la respuesta.
+Begin! answer in spanish
 
 Question: {input}
 {agent_scratchpad}"""
-
 
 # Set up a prompt template
 class CustomPromptTemplate(StringPromptTemplate):

@@ -11,8 +11,8 @@ from langchain.prompts.chat import (
 from dotenv import dotenv_values
 from prompt_templates import custom_templates as ct
 
-# from agents.Agent import agent_exec as agent
-from agents.Agent import agent
+from agents.Agent import agent_exec as agent
+# from agents.Agent import agent
 
 ENV = dotenv_values(".env")
 

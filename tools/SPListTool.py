@@ -111,10 +111,10 @@ class CustomPandasTool(BaseTool):
     
     def _run(self, prompt: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
         """Use the tool."""
-        df = pd.read_csv("../data/data_test.csv")
+        df = pd.read_csv("data/data_test.csv")
 
         pandas_agent = create_pandas_dataframe_agent(
-            llm=self.llm,
+            llm=self.pandas_llm,
             df=df,
             verbose=True,
             agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
