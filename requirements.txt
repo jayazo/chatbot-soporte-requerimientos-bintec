@@ -1,5 +1,5 @@
 chainlit
-langchain
+langchain==0.0.304
 python-dotenv
 google-generativeai
 ipykernel

@@ -109,7 +109,7 @@ class CustomPandasTool(BaseTool):
     pandas_llm = OpenAI(model_name="text-davinci-003", temperature=0,
                     verbose=True, openai_api_key=ENV['OPENAI_API_KEY'])
     
-    def _run(self, prompt: str) -> str:
+    def _run(self, prompt: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
         """Use the tool."""
         df = pd.read_csv("../data/data_test.csv")
 
