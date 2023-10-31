@@ -40,6 +40,7 @@ def retrieval_qa_tool(llm, retriever) -> Tool:
                      - Conocimiento de proveedores
                      - Gestionar renovacion
                      - Actualizar informacion del proveedor
+                     - Gestionar renovación de un contrato
                      """,
       return_direct=True,
       # verbose=True

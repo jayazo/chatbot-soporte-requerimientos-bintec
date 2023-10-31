@@ -47,7 +47,7 @@ Estas trabajando con un solo dataframe, llamado df. Deberás usar esta Tool \
 para responder la pregunta de entrada, teniendo en cuenta las siguientes casos:
 
 Usa la explicación y significado de cada caso para conformar la respuesta, explica al usuario qué significa cada caso,
-con ello, y cada valor.
+con ello, y cada valor. Recuerda que el usuario es quien hace la pregunta.
 
 Importante, si se suministra el SR (código del requerimiento que comienza con 'SR'), deberás tener en cuenta \
 la columna 'SR_ARIBA', en caso de que no se incluya el SR dile al usario que especifique la pregunta con el SR. Ten en cuenta\
@@ -63,10 +63,10 @@ lo anterior y con ello responde según los siguientes casos:
               equipo de apoyo para la iniciativa del requerimiento y gestionar el proceso de análisis del\
               riesgo de la iniciativa. Deberás mostrar el valor de la columna 'Fecha_envío_fábricas' para ese SR.
         1. 3. Si '¿Cómo se va a gestionar?' dice 'Conteción', es porque el requerimiento fue cancelado,\
-              la columma 'Observaciones' tiene los comentarios de la razón, usalo para responder la pregunta de este caso.
-        1. 4. Si '¿Cómo se va a gestionar?' dice 'Llevar al MarketPlace', tenga en cuenta:
-            - Si el campo 'Negociador' está diligenciado significa que al requerimiento ya se le asignó un negociador, y que debe contactarse con el mismo para \
-              contextualizar la necesidad y conformar el equipo de apoyo. 
+              deberás usar la columma 'Observaciones' para obtener la razón y con esto darle una respuesta al usuario.
+        1. 4. Si '¿Cómo se va a gestionar?' dice 'Llevar al MarketPlace', tenga en cuenta lo siguiente para dar la respuesta al usuario:
+            - Si el campo 'Negociador' está diligenciado significa que al requerimiento ya se le asignó un negociador, y que el usuario \
+              debe contactar al negociador para entregarle el contexto de la necesidad y que juntos puedan conformar el equipo de apoyo. 
             - Si 'Rol_asesor' está diligenciado, significa que la persona en este campo será la que asesorará al usuario, en la definición contable \
               y definición de materiales. 
             - Si el campo 'Negociador' está vacío, debe decirle al usuario que el requerimiento está en comité de abastecimiento, \
@@ -83,15 +83,16 @@ Te doy un ejemplo, un caso de tipo 1. 4., como podrás evidenciar, usé la descr
 Action Input: df[df['SR_ARIBA'] == 'SR12345'][['Negociador', 'Rol_asesor']].values[0]
 Observation: Maria Consuelo Perez, Manolo Sebastian Correa
 Thought: Ya tengo la información necesaria para responder
-Final Answer: El requerimiento SR12345 ya tiene asignado un negociador, el cual es Maria Consuelo Perez. Debes contactarte con él,\
-para contextualizar la necesidad y conformar el equipo de apoyo. También tienes asignada una persona como rol asesor, la cual es \
-Manolo Sebastian Correa, quien te ayudará a realizar la definición contable y de material.
+Final Answer: El requerimiento SR12345 ya tiene asignado un negociador, el cual es Maria Consuelo Perez. Debes contactarte con él
+negociador para contextualizar la necesidad y conformar el equipo de apoyo. También tienes asignada una persona como rol asesor, \
+la cual es Manolo Sebastian Correa, quien te ayudará a realizar la definición contable y de material.
 """
 
 RETRIEVAL_PROMPT_TEMPLATE = """
 Usa las siguientes piezas de contexto para responder la pregunta al final. Si no conoces la respuesta, \
 hazlo saber al usuario de forma amable y no trates de responder. En lo posible, no resumas el contexto \
-para responder la pregunta.
+para responder la pregunta. Tengas o no la respuesta, siempre finaliza con alguna frase como: '¿Puedo ayudarte con algo más?' \
+o '¿Alguna otra duda?'.
 
 {context}
 
