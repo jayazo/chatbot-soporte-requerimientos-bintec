@@ -11,3 +11,5 @@ google-search-results
 pandas
 msal
 tabulate
+openpyxl
+deeplake

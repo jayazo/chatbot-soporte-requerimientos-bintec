@@ -15,7 +15,9 @@ from langchain.callbacks.manager import (
 
 from dotenv import dotenv_values
 
+# ENV = dotenv_values("../.env")
 ENV = dotenv_values(".env")
+
 
 
 class ListDataExtract():
@@ -104,20 +106,21 @@ class ListDataExtract():
 
 
 class CustomPandasTool(BaseTool):
-    name = "custom_pandas_tool"
-    description = "Usar cuando el usuario desee conocer el estado de un requerimiento"
-    pandas_llm = OpenAI(model_name="text-davinci-003", temperature=0,
-                    verbose=True, openai_api_key=ENV['OPENAI_API_KEY'])
-    
-    def _run(self, prompt: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
-        """Use the tool."""
-        df = pd.read_csv("data/data_test.csv")
+   name = "custom_pandas_tool"
+   description = "Usar cuando el usuario desee conocer el estado de un requerimiento"
+   pandas_llm = OpenAI(model_name="text-davinci-003", temperature=0,
+                       verbose=True, openai_api_key=ENV['OPENAI_API_KEY'])
 
-        pandas_agent = create_pandas_dataframe_agent(
-            llm=self.pandas_llm,
-            df=df,
-            verbose=True,
-            agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
-        )
+   def _run(self, prompt: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
+      """Use the tool."""
+      # df = pd.read_csv("data/data_test.csv")
+      df = pd.read_excel("data/data_test.xlsx")
 
-        return pandas_agent.run(prompt)
+      pandas_agent = create_pandas_dataframe_agent(
+          llm=self.pandas_llm,
+          df=df,
+          verbose=True,
+          agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
+      )
+
+      return pandas_agent.run(prompt)

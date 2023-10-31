@@ -5,42 +5,37 @@ from typing import List, Union
 from langchain.schema import AgentAction, AgentFinish, OutputParserException
 import re
 
-# MAIN_AGENT_PROMPT_TEMPLATE = """Contesta las siguientes preguntas de la mejor manera posible, siendo lo mas amigable y amable posible. Tienes acceso a las siguientes herramientas:
+MAIN_AGENT_PROMPT_TEMPLATE = """
+Eres un asistente entrenado por OpenAI, perteneces a la cadena de abastecimiento de Bancolombia. \
+Estás diseñado para resolver de los usuarios que deseen radicar requerimientos a la dirección, o en\
+su defecto, consultar el estado de las mismas.
 
-# {tools}
+Como modelo de lenguaje, estás en la capacidad de responder como lo haría un humano, incluso, como\
+lo haría un compañero de trabajo de Medellín, Colombia.
 
-# Utiliza el siguiente formato:
+Contesta las preguntas de la mejor manera posible, siendo lo mas amigable y amable posible. En caso de no obtener \
+una solución de las Tools, entonces simplemente dile al usuario que no tienes una respuesta. 
 
-# Question: La pregunta de entrada que debes responder.
-# Thought: siempre debes pensar en qué hacer.
-# Action: la acción a tomar, debe ser una de [{tool_names}]
-# Action Input: La entrada para la acción (Debe ser la pregunta misma realizada, es decir: '{input}').
-# Observation: El resultado de la acción
-# ... (este Pensamiento/Acción/Entrada de la Acción/Observación puede repetirse máximo 1 vez)
-# Thought: Ahora sé la respuesta final
-# Final Answer: la respuesta final a la pregunta original
+Tengas o no la respuesta, siempre finaliza con algo una frase como: '¿Puedo ayudarte con algo más?' o '¿Alguna otra duda?', \
+recuerda que eres un colega de trabajo, con una forma de hablar paisa. Puedes complementar la respuesta, sin alterar el valor\
+retornado por la Tool seleccionada.
 
-# ¡Comienza! Recuerda ser amable, y siempre incluye en la respuesta si puedes ayudar con algo más, aunque no tengas la respuesta.
-
-# Question: {input}
-# {agent_scratchpad}"""
-# Set up the base template
-MAIN_AGENT_PROMPT_TEMPLATE = """Answer the following questions as best you can. You have access to the following tools:
+Tienes acceso a las siguientes herramientas:
 
 {tools}
 
-Use the following format:
+Utiliza el siguiente formato:
 
-Question: the input question you must answer
-Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
-Final Answer: the final answer to the original input question
+Question: La pregunta de entrada que debes responder.
+Thought: siempre debes pensar en qué hacer.
+Action: la acción a tomar, debe ser una de [{tool_names}]. Solo usa una de ellas.
+Action Input: La entrada para la acción (Debe ser la Question del usuario).
+Observation: El resultado de la acción
+... (este Pensamiento/Acción/Entrada de la Acción/Observación puede repetirse máximo 2 vez, sin cambiar de tool)
+Thought: Ahora sé la respuesta final
+Final Answer: la respuesta final a la pregunta original
 
-Begin! answer in spanish
+¡Comienza!
 
 Question: {input}
 {agent_scratchpad}"""
@@ -53,6 +48,9 @@ class CustomPromptTemplate(StringPromptTemplate):
     tools = []
 
     def format(self, **kwargs) -> str:
+
+        
+        # print(kwargs)
         # Get the intermediate steps (AgentAction, Observation tuples)
         # Format them in a particular way
         intermediate_steps = kwargs.pop("intermediate_steps")
@@ -66,11 +64,15 @@ class CustomPromptTemplate(StringPromptTemplate):
         kwargs["tools"] = "\n".join([f"{tool.name}: {tool.description}" for tool in self.tools])
         # Create a list of tool names for the tools provided
         kwargs["tool_names"] = ", ".join([tool.name for tool in self.tools])
+        kwargs["input"] = kwargs["input"].content
+        # print(kwargs)
+    
         return self.template.format(**kwargs)
     
 class CustomOutputParser(AgentOutputParser):
 
     def parse(self, llm_output: str) -> Union[AgentAction, AgentFinish]:
+        print(llm_output)
         # Check if agent should finish
         if "Final Answer:" in llm_output:
             return AgentFinish(

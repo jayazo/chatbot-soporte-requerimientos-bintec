@@ -8,42 +8,18 @@ from langchain.agents.agent_toolkits import create_retriever_tool
 def retrieval_qa_tool(llm, retriever) -> Tool:
 
    # Crear retrieval QA Chain
-   # rag = RetrievalQA.from_chain_type(
-   #    llm=llm,
-   #    chain_type="stuff",
-   #    retriever=retriever,
-   #    # return_source_documents=True
-   # )
+   rag = RetrievalQA.from_chain_type(
+      llm=llm,
+      chain_type="stuff",
+      retriever=retriever,
+      # return_source_documents=True,
+   )
 
-   # # Crea el tool
-   # tool = Tool(
-   #    name="Retrieval QA",
-   #    func=rag.run,
-   #    # description="""Usar cuando la pregunta esté relacionada a:
-   #    #                - Conformacion de equipo de apoyo
-   #    #                """,
-   #    description="""Usar cuando la pregunta esté relacionada a:
-   #                   - Conformacion de equipo de apoyo
-   #                   - Conocimiento de proveedores
-   #                   - Solicitar acuerdos de confidencialidad
-   #                   - Solicitar propuesta económica o cotizaciones
-   #                   - Negociaciones
-   #                   - Definiciones contables y material
-   #                   - Formalizacion de contratos o compra
-   #                   - Gestionar prerrequisitos de negociacion
-   #                   - Conocimiento de proveedores
-   #                   - Gestionar renovacion
-   #                   - Actualizar informacion del proveedor
-   #                   """,
-
-   #    return_direct=True,
-   # )
-   # return tool
-
-   return create_retriever_tool(
-       retriever=retriever,
-       name="Retrieval QA",
-       description="""Usar cuando la pregunta esté relacionada a: 
+   # Crea el tool
+   tool = Tool(
+      name="Retrieval QA",
+      func=rag.run,
+      description="""Usar cuando la pregunta esté relacionada a:
                      - Conformacion de equipo de apoyo
                      - Conocimiento de proveedores
                      - Solicitar acuerdos de confidencialidad
@@ -55,5 +31,26 @@ def retrieval_qa_tool(llm, retriever) -> Tool:
                      - Conocimiento de proveedores
                      - Gestionar renovacion
                      - Actualizar informacion del proveedor
-                     """
+                     """,
+      return_direct=True,
+      # verbose=True
    )
+   return tool
+
+#    return create_retriever_tool(
+#        retriever=retriever,
+#        name="Retrieval QA",
+#        description="""Usar cuando la pregunta esté relacionada a: 
+#                      - Conformacion de equipo de apoyo
+#                      - Conocimiento de proveedores
+#                      - Solicitar acuerdos de confidencialidad
+#                      - Solicitar propuesta económica o cotizaciones
+#                      - Negociaciones
+#                      - Definiciones contables y material
+#                      - Formalizacion de contratos o compra
+#                      - Gestionar prerrequisitos de negociacion
+#                      - Conocimiento de proveedores
+#                      - Gestionar renovacion
+#                      - Actualizar informacion del proveedor
+#                      """
+#    )

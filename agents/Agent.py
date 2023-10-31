@@ -15,7 +15,10 @@ from tools.SPListTool import CustomPandasTool
 
 from prompt_templates.custom_templates import CustomPromptTemplate, CustomOutputParser, MAIN_AGENT_PROMPT_TEMPLATE
 
+# ENV = dotenv_values("../.env")
 ENV = dotenv_values(".env")
+
+# print(ENV)
 
 # Define models (llms)
 retrieval_llm = OpenAI(model="text-davinci-003", temperature=0,
@@ -32,11 +35,6 @@ docs_search = Chroma(persist_directory="../vector_store",
 tools = [
     retrieval_qa_tool(llm=retrieval_llm, retriever=docs_search.as_retriever()),
     CustomPandasTool()
-    # create_retriever_tool(
-    #    retriever=docs_search.as_retriever(),
-    #    name=
-    # )
-
 ]
 
 tool_names = [tool.name for tool in tools]

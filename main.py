@@ -20,9 +20,11 @@ ENV = dotenv_values(".env")
 def main():
    cl.user_session.set("agent", agent)
 
-
 @cl.on_message
 async def main(message: str):
    agent = cl.user_session.get("agent")
-   res = await agent.arun(message, callbacks=[cl.AsyncLangchainCallbackHandler()])
+   res = await agent.arun(input=message, callbacks=[cl.AsyncLangchainCallbackHandler()], return_only_outputs=False)
+   # res = await agent(inputs={"input":message}, callbacks=[cl.AsyncLangchainCallbackHandler()], return_only_outputs=False)
+   print(res)
+   print(type(res))
    await cl.Message(content=res).send()

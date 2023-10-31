@@ -20,7 +20,7 @@ prompt_playground = true
 
 [UI]
 # Name of the app and chatbot.
-name = "BINTEC Chatbot"
+name = "Sara"
 
 # Description of the app and chatbot. This is used for HTML tags.
 # description = ""
@@ -35,7 +35,7 @@ default_expand_messages = false
 hide_cot = false
 
 # Link to your github repo. This will add a github button in the UI's header.
-# github = ""
+github = "https://github.com/jayazo/chatbot-soporte-requerimientos-bintec"
 
 # Override default MUI light theme. (Check theme.ts)
 
