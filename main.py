@@ -21,10 +21,14 @@ def main():
    cl.user_session.set("agent", agent)
 
 @cl.on_message
-async def main(message: str):
+async def main(message):
    agent = cl.user_session.get("agent")
-   res = await agent.arun(input=message, callbacks=[cl.AsyncLangchainCallbackHandler()], return_only_outputs=False)
-   # res = await agent(inputs={"input":message}, callbacks=[cl.AsyncLangchainCallbackHandler()], return_only_outputs=False)
-   print(res)
-   print(type(res))
+   # res = await agent.arun(input=message, callbacks=[cl.AsyncLangchainCallbackHandler()], return_only_outputs=False)
+   res = await agent.arun(
+      {
+         "input": message.content,
+         # "callbacks": [cl.AsyncLangchainCallbackHandler()],
+         "return_only_outputs": False
+      }
+      )
    await cl.Message(content=res).send()

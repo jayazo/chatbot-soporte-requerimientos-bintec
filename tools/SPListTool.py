@@ -7,6 +7,7 @@ from langchain.agents import create_pandas_dataframe_agent
 from langchain.tools import BaseTool, StructuredTool, Tool, tool
 from langchain.agents.agent_types import AgentType
 from langchain.llms import OpenAI
+from prompt_templates.custom_templates import PANDAS_AGENT_PREFIX
 
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForToolRun,
@@ -107,7 +108,20 @@ class ListDataExtract():
 
 class CustomPandasTool(BaseTool):
    name = "custom_pandas_tool"
-   description = "Usar cuando el usuario desee conocer el estado de un requerimiento"
+   description = """
+                  Usar cuando el usuario desee conocer lo siguiente de su requerimiento:
+                  - El estado.
+                  - Negociador.
+                  - El rol Asesor.
+                  - Fecha de radicación.
+                  - La fecha de asignación o delegación.
+                  - Familia o categoría.
+                  - Cómo se va a gestionar el requerimieto (Estado).
+                  - Proveedores conocidos
+                  - Detalle del producto o servicio.
+                  - El CW a renovar (id del contrato).
+                  - Nombre de la iniciativa.
+                 """
    pandas_llm = OpenAI(model_name="text-davinci-003", temperature=0,
                        verbose=True, openai_api_key=ENV['OPENAI_API_KEY'])
 
@@ -120,7 +134,8 @@ class CustomPandasTool(BaseTool):
           llm=self.pandas_llm,
           df=df,
           verbose=True,
-          agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
+          agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+          prefix=PANDAS_AGENT_PREFIX
       )
 
       return pandas_agent.run(prompt)

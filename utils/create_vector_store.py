@@ -11,7 +11,7 @@ def create_vector_store():
       loader = PyPDFLoader(f"../pdf/{pdf}")
       docs.extend(loader.load())
 
-   text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=30)
+   text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=30)
    chunked_docs = text_splitter.split_documents(docs)
    
    vector_db = Chroma.from_documents(chunked_docs, embedding=HuggingFaceEmbeddings(), persist_directory="../vector_store")
