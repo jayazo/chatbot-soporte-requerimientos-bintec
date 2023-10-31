@@ -1,6 +1,6 @@
 ![alt text](docs/banner.png)
 
-# Sara (Sistema de atención para requerimientos)
+# Sara (Sistema de atención para requerimientos de abastecimiento)
 
 Sara es un asistente virtual que te permite resolver dudas en torno a la radicación y consulta de estado de requerimientos a la cadena de abastecimiento.
 
